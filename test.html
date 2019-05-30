@@ -1,0 +1,57 @@
+<html>
+  <body>
+    <div id="root"></div>
+    <script>
+    function Home() {}
+    Home.prototype.render = function () {
+        // TODO: return <h2>Home</h2>
+    }
+
+    function Blog() {}
+    Blog.prototype.render = function () {
+        // TODO: return <h2>Blog</h2>
+    }
+
+    const routes = {
+        '/': Home,
+        '/blog': Blog,
+    };
+
+    function Link(props) {
+        this.to = props.to;
+        this.title = props.title;
+    }
+    Link.prototype.render = function () {
+        // TODO: return <a href="#/{to}">{title}</a>
+    }
+
+    function Header() {}
+    Header.prototype.render = function () {
+        // TODO: return <div class="Header"><Link to="/">Home</Link><Link to="/blog">Blog</Link></div>
+        const header = document.createElement('div');
+        header.className = 'Header';
+
+        const homeLink = new Link({ title: 'Home', to: '/' });
+        const blogLink = new Link({ title: 'Blog', to: '/blog' });
+
+        header.appendChild(homeLink.render());
+        header.appendChild(blogLink.render());
+
+        return header;
+    }
+
+    function App() {}
+    App.prototype.render = function () {
+        // TODO: return <div><Header />{routes[window.location.hash.substring(1)]()}</div>
+    }
+
+    const root = document.getElementById('root');
+    function render() {
+        root.innerHTML = '';
+        root.appendChild((new App()).render());
+    }
+
+    render();
+    </script>
+  </body>
+</html>
