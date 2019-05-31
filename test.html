@@ -3,6 +3,10 @@
     <div id="root"></div>
     <script>
     let route
+    function reload () {
+        window.location.reload()
+    }
+
     function Home() {}
     Home.prototype.render = function () {
         // TODO: return <h2>Home</h2>
@@ -41,7 +45,8 @@
         let link = document.createElement('a')
         link.href = `#${this.to}`;
         link.innerText = `${this.title}`;
-        route =  document.location.hash.substring(1)
+        //link.onclick = reload
+        route = window.location.hash.substring(1);
         return link;
     
 
@@ -60,31 +65,40 @@
         header.appendChild(homeLink.render());
         header.append(space)
         header.appendChild(blogLink.render());
-        console.log(header);
+        console.log(header, route);
 
         return header;
     }
     function listener (){
         let internalRoute = window.location.hash.substring(1)
+        let home = new Home;
+        let blog = new Blog;
+        let body = document.querySelector('.body')
         if(internalRoute === '/'){
             route = "/"
+            
+            body.children[0].replaceWith(home.render())
         }else {
             route = "/blog"
+            body.children[0].replaceWith(blog.render())
         }
     }
     function App() {}
     App.prototype.render = function () {
         // TODO: return <div><Header />{routes[window.location.hash.substring(1)]()}</div>
         let app = document.createElement('div')
+        let body = document.createElement('div')
+        body.className = 'body'
         let header = new Header
         let home = new Home
         let blog = new Blog
         app.appendChild(header.render())
         if(route === '/'){
-            app.appendChild(home.render());
+            body.appendChild(home.render());
         }else if(route === '/blog'){
-            app.appendChild(blog.render());
+            body.appendChild(blog.render());
         }
+        app.appendChild(body);
         window.addEventListener('popstate', listener);
         return app
     }
