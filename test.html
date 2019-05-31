@@ -2,20 +2,35 @@
   <body>
     <div id="root"></div>
     <script>
+    let route
     function Home() {}
     Home.prototype.render = function () {
         // TODO: return <h2>Home</h2>
+        let newH2 = document.createElement('h2');
+        newH2.innerHTML = "Home";
+        return newH2;
     }
 
     function Blog() {}
     Blog.prototype.render = function () {
         // TODO: return <h2>Blog</h2>
+        let newH2 = document.createElement('h2')
+        newH2.innerHTML = 'Blog';
+
+        return newH2
     }
 
-    const routes = {
-        '/': Home,
-        '/blog': Blog,
-    };
+    const routes = [
+        {
+            to: '/',
+            title: Home
+        },
+        {
+            to:'/blog',
+            title: Blog
+        }
+    ];
+    const singleRoute = routes[0];
 
     function Link(props) {
         this.to = props.to;
@@ -23,6 +38,13 @@
     }
     Link.prototype.render = function () {
         // TODO: return <a href="#/{to}">{title}</a>
+        let link = document.createElement('a')
+        link.href = `#${this.to}`;
+        link.innerText = `${this.title}`;
+        route =  document.location.hash.substring(1)
+        return link;
+    
+
     }
 
     function Header() {}
@@ -32,23 +54,45 @@
         header.className = 'Header';
 
         const homeLink = new Link({ title: 'Home', to: '/' });
+        const space = " "
         const blogLink = new Link({ title: 'Blog', to: '/blog' });
-
+    
         header.appendChild(homeLink.render());
+        header.append(space)
         header.appendChild(blogLink.render());
+        console.log(header);
 
         return header;
     }
-
+    function listener (){
+        let internalRoute = window.location.hash.substring(1)
+        if(internalRoute === '/'){
+            route = "/"
+        }else {
+            route = "/blog"
+        }
+    }
     function App() {}
     App.prototype.render = function () {
         // TODO: return <div><Header />{routes[window.location.hash.substring(1)]()}</div>
+        let app = document.createElement('div')
+        let header = new Header
+        let home = new Home
+        let blog = new Blog
+        app.appendChild(header.render())
+        if(route === '/'){
+            app.appendChild(home.render());
+        }else if(route === '/blog'){
+            app.appendChild(blog.render());
+        }
+        window.addEventListener('popstate', listener);
+        return app
     }
-
     const root = document.getElementById('root');
     function render() {
         root.innerHTML = '';
-        root.appendChild((new App()).render());
+        let begin = root.appendChild(App.prototype.render());
+        return begin
     }
 
     render();
