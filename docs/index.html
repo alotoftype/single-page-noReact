@@ -93,10 +93,15 @@
         let home = new Home
         let blog = new Blog
         app.appendChild(header.render())
-        if(route === '/'){
-            body.appendChild(home.render());
-        }else if(route === '/blog'){
-            body.appendChild(blog.render());
+
+        switch(route) {
+            case '/':
+              body.appendChild(home.render());
+            case '/blog':
+               body.appendChild(blog.render());
+            default: 
+               body.appendChild(home.render());
+
         }
         app.appendChild(body);
         window.addEventListener('popstate', listener);
