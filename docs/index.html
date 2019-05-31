@@ -76,7 +76,6 @@
         let body = document.querySelector('.body')
         if(internalRoute === '/'){
             route = "/"
-            
             body.children[0].replaceWith(home.render())
         }else {
             route = "/blog"
@@ -103,6 +102,7 @@
                body.appendChild(home.render());
 
         }
+        //body.appendChild(home.render());
         app.appendChild(body);
         window.addEventListener('popstate', listener);
         return app
